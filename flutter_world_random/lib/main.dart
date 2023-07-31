@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/elements/generator_page.dart';
 import 'package:namer_app/favorite_page.dart';
 import 'package:provider/provider.dart';
 import 'package:english_words/english_words.dart';
-import 'elements/big_card.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //gestion des états et le partage des données 
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
@@ -36,7 +38,8 @@ class MyAppState extends ChangeNotifier {
   }
 
   //pour icone like initialise avec une liste vide
-  var favorites = <WordPair>[];
+  //var favorites = <WordPair>[];
+   List<WordPair> favorites = [];
 
   void toggleFavorite() {
     if (favorites.contains(current)) {
@@ -44,6 +47,10 @@ class MyAppState extends ChangeNotifier {
     } else {
       favorites.add(current);
     }
+    notifyListeners();
+  }
+  void removeFavorite(WordPair favorite) {
+    favorites.remove(favorite);
     notifyListeners();
   }
 }
@@ -71,6 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+          title: const Text('English Random Word'),
+          backgroundColor: Color.fromARGB(255, 53, 148, 169),
+        ),
       body: Row(
         children: [
           SafeArea(
@@ -97,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Container(
               color: Theme.of(context).colorScheme.primaryContainer,
-              child: page, // ← Here.
+              child: page,
             ),
           ),
         ],
@@ -106,54 +117,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class GeneratorPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var pair = appState.current;
-    IconData icon;
-    if (appState.favorites.contains(pair)) {
-      icon = Icons.favorite;
-    } else {
-      icon = Icons.favorite_border;
-    }
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Lets go!!!',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 12, 84, 185),
-            ),
-          ),
-          BigCard(pair: pair),
-          SizedBox(height: 70),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: Text('Like'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: Text('Next'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}

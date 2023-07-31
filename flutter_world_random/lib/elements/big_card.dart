@@ -25,8 +25,7 @@ class BigCard extends StatelessWidget {
           //deux mots séparés au lieu d'un composé
           semanticsLabel: "${pair.first} ${pair.second}",
         ),
-        //pair.first,
-        //style: TextStyle(color: Color.fromARGB(255, 34, 1, 1)),
+       
       ),
     );
   }

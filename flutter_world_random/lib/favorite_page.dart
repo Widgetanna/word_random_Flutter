@@ -11,24 +11,38 @@ class FavoritePage extends StatelessWidget {
 
     if (appState.favorites.isEmpty) {
       return Center(
-        child: Text('No favorites yet.'),
+        child: Text("Aucun favorit pour l'instant",
+         style: TextStyle(fontSize: 20),),
       );
     }
 
-    return ListView(
+    return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('You have '
-              '${appState.favorites.length} favorites:'),
+        Text(
+          'Valeur du compteur : ${appState.favorites.length} favorits',
+          style: TextStyle(fontSize: 20),
         ),
-        for (var pair in appState.favorites)
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(pair.asLowerCase),
+        Expanded(
+          child: ListView.builder(
+            itemCount: appState.favorites.length,
+            itemBuilder: (context, i) {
+              final favorite = appState.favorites[i];
+
+              return ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text(
+                  favorite.asString.toLowerCase(),
+                  style: TextStyle(fontSize: 18),
+                ),
+                trailing: Icon(Icons.delete),
+                onTap: () {
+                  context.read<MyAppState>().removeFavorite(favorite);
+                },
+              );
+            },
           ),
+        ),
       ],
     );
   }
 }
-  
