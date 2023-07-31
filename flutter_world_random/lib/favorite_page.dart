@@ -12,7 +12,7 @@ class FavoritePage extends StatelessWidget {
     if (appState.favorites.isEmpty) {
       return Center(
         child: Text("Aucun favorit pour l'instant",
-         style: TextStyle(fontSize: 20),),
+         style: TextStyle(fontSize: 24),),
       );
     }
 
