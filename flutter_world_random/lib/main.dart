@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/pages/home_page.dart';
 import 'package:english_words/english_words.dart';
+
 import 'package:provider/provider.dart';
 
 /*le package "provider" est utilisé pour gérer 
@@ -27,13 +28,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+ 
   @override
   Widget build(BuildContext context) {
     //gestion des états et le partage des données 
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false, 
         title: 'Namer App',
         theme: ThemeData(
           useMaterial3: true,
@@ -48,6 +50,9 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
+  
+  List<WordPair> generatedPairs = [];
+  
   void getNext() {
     current = WordPair.random();
     notifyListeners();
@@ -57,9 +62,22 @@ class MyAppState extends ChangeNotifier {
   //var favorites = <WordPair>[];
    List<WordPair> favorites = [];
 
-  void toggleFavorite() {
+  void toggleFavorite(BuildContext context) {
     if (favorites.contains(current)) {
-      favorites.remove(current);
+      // Show an alert if the word is already favorited
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Déjà sélectionné'),
+          content: Text('Ce mot est déjà dans les favoris.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
     } else {
       favorites.add(current);
     }
@@ -73,6 +91,7 @@ class MyAppState extends ChangeNotifier {
     current = newPair;
     notifyListeners();
   }
+  
 }
 
 
