@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:namer_app/elements/big_card.dart';
 import 'package:namer_app/main.dart';
 import 'package:provider/provider.dart';
+import '../elements/cupertino_widget.dart';
 
 class GeneratorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
-    
+
     IconData icon;
     if (appState.favorites.contains(pair)) {
       icon = Icons.favorite;
@@ -16,10 +17,19 @@ class GeneratorPage extends StatelessWidget {
       icon = Icons.favorite_border;
     }
 
-    return Center(
+     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          CupertinoPickerWidget(
+            selectedPair: pair,
+            onSelectedPairChanged: (selectedPair) {
+              appState.updateCurrent(selectedPair);
+            },
+            pairs: appState.favorites,
+          ),
+           
+         
           Text(
             'Lets go!!!',
             textAlign: TextAlign.center,

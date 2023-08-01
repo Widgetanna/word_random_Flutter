@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/elements/generator_page.dart';
-import 'package:namer_app/favorite_page.dart';
-import 'package:provider/provider.dart';
+import 'package:namer_app/pages/home_page.dart';
 import 'package:english_words/english_words.dart';
+import 'package:provider/provider.dart';
 
+/*le package "provider" est utilisé pour gérer 
+les états et partager les données entre différents widgets.
+(faciliter la gestion des états, de rendre ces états accessibles) 
+Provider est une bibliothèque de gestion d'état qui facilite la communication 
+entre les widgets et leurs descendants.
+Le rôle de "provider" :
+1.ChangeNotifierProvider : Il s'agit d'un widget spécial fourni par la bibliothèque "provider" 
+qui permet de créer et d'exposer un objet "MyAppState" aux descendants du widget où il est placé. 
+L'objet "MyAppState" est une classe qui étend "ChangeNotifier". Cela signifie que tout changement dans l'état de cet objet 
+déclenchera automatiquement la mise à jour des widgets qui écoutent les modifications de cet état.
 
+2. la propriété "create" pour créer une instance de la classe "MyAppState". 
+Cela garantit que la même instance de "MyAppState" est partagée entre tous les widgets descendants 
+qui ont besoin d'accéder à cet état.
+3. les widgets descendants peuvent y accéder en utilisant la classe "Provider.of<MyAppState>(context)". 
+Cela permet aux widgets d'observer les changements d'état et de se reconstruire automatiquement lorsque l'état change, 
+grâce à l'utilisation de la méthode notifyListeners()
+*/
 void main() {
   runApp(MyApp());
 }
@@ -53,67 +69,12 @@ class MyAppState extends ChangeNotifier {
     favorites.remove(favorite);
     notifyListeners();
   }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = GeneratorPage();
-        break;
-      case 1:
-        page = FavoritePage();
-        break;
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-          title: const Text('English Random Word'),
-          backgroundColor: Color.fromARGB(255, 53, 148, 169),
-        ),
-      body: Row(
-        children: [
-          SafeArea(
-            child: NavigationRail(
-              extended: false,
-              destinations: [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home),
-                  label: Text('Home'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.favorite),
-                  label: Text('Favorites'),
-                ),
-              ],
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (value) {
-                setState(() {
-                  selectedIndex = value;
-                });
-              },
-            ),
-          ),
-          Expanded(
-            child: Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: page,
-            ),
-          ),
-        ],
-      ),
-    );
+  void updateCurrent(WordPair newPair) {
+    current = newPair;
+    notifyListeners();
   }
 }
+
+
+
 
