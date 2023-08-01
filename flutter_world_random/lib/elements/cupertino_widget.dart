@@ -28,8 +28,7 @@ class CupertinoPickerWidget extends StatefulWidget {
   @override
   void initState() {
     super.initState();
-    // Initialize the list with false for each pair initially
-    favoriteStates = List.generate(widget.pairs.length, (index) => false);
+   favoriteStates = List.generate(widget.pairs.length, (index) => false);
   }
   @override
   void didUpdateWidget(CupertinoPickerWidget oldWidget) {
@@ -43,9 +42,9 @@ class CupertinoPickerWidget extends StatefulWidget {
   }
   @override
 Widget build(BuildContext context) {
-  // Wrap CupertinoPicker with a Container to set a fixed height
+ 
   return SizedBox(
-    height: 240, // Adjust the height according to your preference
+    height: 240,
     child: CupertinoPicker.builder(
       magnification: 1.22,
       squeeze: 1.2,
@@ -64,9 +63,9 @@ Widget build(BuildContext context) {
                 favoriteStates[index]
                     ? Icons.favorite
                     : Icons.favorite_border,
-                color: Colors.red, // Heart icon color
+                color: Colors.red, 
               ),
-              SizedBox(width: 8), // Space between icon and word
+              SizedBox(width: 8), 
               Text(
                 widget.pairs[index].asPascalCase,
                 style: TextStyle(
