@@ -64,7 +64,7 @@ class MyAppState extends ChangeNotifier {
 
   void toggleFavorite(BuildContext context) {
     if (favorites.contains(current)) {
-      // Show an alert if the word is already favorited
+     
       showDialog(
         context: context,
         builder: (context) => AlertDialog(

@@ -11,6 +11,7 @@ class CupertinoPickerWidget extends StatefulWidget {
   }) : super(key: key);
 
   final WordPair selectedPair;
+  //variable onSelectedPairChanged utilisée comme un rappel (callback),lorsque l'utilisateur sélectionne une paire dans le CupertinoPickerWidget
   final Function(WordPair selectedPair) onSelectedPairChanged;
   final List<WordPair> pairs;
 
@@ -19,30 +20,47 @@ class CupertinoPickerWidget extends StatefulWidget {
 }
 
 class _CupertinoPickerWidgetState extends State<CupertinoPickerWidget> {
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 240,
       child: CupertinoPicker.builder(
+        //contrôle le niveau de zoom appliqué aux éléments affichés dans le sélecteur.
         magnification: 1.22,
-        squeeze: 1.2,
+        //contrôle l'espace vertical entre les éléments affichés dans le sélecteur.
+        squeeze: 1.5,
+        //contrôle l'affichage d'une loupe (ou loupe de mise au point) au-dessus du sélecteur.
         useMagnifier: true,
         itemExtent: 60,
+        //un rappel (callback)
         onSelectedItemChanged: (int selectedItem) {
-          widget.onSelectedPairChanged(widget.pairs[selectedItem]);
+          setState(() {
+            widget.onSelectedPairChanged(widget.pairs[selectedItem]);
+            isFavorite = selectedItem !=
+                0; // Si l'élément sélectionné n'est pas le premier, définir isFavorite sur true, sinon false.
+          });
         },
+        //nombre total d'éléments que le sélecteur doit afficher.
         childCount: widget.pairs.length,
         itemBuilder: (BuildContext context, int index) {
           final WordPair pair = widget.pairs[index];
           final bool isFirstPair = index == 0;
+
           return Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (!isFirstPair)
+                if (!isFirstPair && isFavorite)
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  )
+                else if (!isFirstPair && !isFavorite)
                   Icon(
                     Icons.favorite_border,
-                    color: Colors.red,
+                    color: null,
                   ),
                 SizedBox(width: 8),
                 Text(
