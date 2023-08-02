@@ -20,7 +20,9 @@ class CupertinoPickerWidget extends StatefulWidget {
 }
 
 class _CupertinoPickerWidgetState extends State<CupertinoPickerWidget> {
-  bool isFavorite = false;
+  //bool isFavorite = false;
+  int selectedItem = 0;
+ late WordPair selectedPair;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +37,13 @@ class _CupertinoPickerWidgetState extends State<CupertinoPickerWidget> {
         useMagnifier: true,
         itemExtent: 60,
         //un rappel (callback)
-        onSelectedItemChanged: (int selectedItem) {
-          setState(() {
-            widget.onSelectedPairChanged(widget.pairs[selectedItem]);
-            isFavorite = selectedItem !=
-                0; // Si l'élément sélectionné n'est pas le premier, définir isFavorite sur true, sinon false.
-          });
-        },
+        onSelectedItemChanged: (int index) {
+    setState(() {
+      selectedItem = index;
+      selectedPair = widget.pairs[index];
+      widget.onSelectedPairChanged(selectedPair);
+    });
+  },
         //nombre total d'éléments que le sélecteur doit afficher.
         childCount: widget.pairs.length,
         itemBuilder: (BuildContext context, int index) {
@@ -52,16 +54,17 @@ class _CupertinoPickerWidgetState extends State<CupertinoPickerWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (!isFirstPair && isFavorite)
-                  Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )
-                else if (!isFirstPair && !isFavorite)
-                  Icon(
-                    Icons.favorite_border,
-                    color: null,
-                  ),
+               if (!isFirstPair)
+        if (index == selectedItem)
+          Icon(
+            Icons.favorite,
+            color: Colors.red,
+          )
+        else
+          Icon(
+            Icons.favorite_border,
+            color: null,
+          ),
                 SizedBox(width: 8),
                 Text(
                   pair.asPascalCase.toLowerCase(),
