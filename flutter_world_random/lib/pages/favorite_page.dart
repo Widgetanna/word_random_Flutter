@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/main.dart';
+import 'package:namer_app/service/my_app.dart';
 import 'package:provider/provider.dart';
 
 class FavoritePage extends StatelessWidget {

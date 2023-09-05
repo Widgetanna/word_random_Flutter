@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/pages/generator_page.dart';
-import 'package:namer_app/favorite_page.dart';
+import 'package:namer_app/pages/favorite_page.dart';
 
 
 

@@ -5,7 +5,7 @@ class BigCard extends StatelessWidget {
   const BigCard({
     Key? key,
     required this.pair,
-  }) : super(key: key);
+   }) : super(key: key);
 
   final WordPair pair;
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/pages/home_page.dart';
-import 'package:english_words/english_words.dart';
-
 import 'package:provider/provider.dart';
+import 'package:namer_app/service/my_app.dart';
+
 
 /*le package "provider" est utilisé pour gérer 
 les états et partager les données entre différents widgets.
@@ -48,51 +48,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-  
-  List<WordPair> generatedPairs = [];
-  
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  //pour icone like initialise avec une liste vide
-  //var favorites = <WordPair>[];
-   List<WordPair> favorites = [];
-
-  void toggleFavorite(BuildContext context) {
-    if (favorites.contains(current)) {
-     
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Déjà sélectionné'),
-          content: Text('Ce mot est déjà dans les favoris.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-  void removeFavorite(WordPair favorite) {
-    favorites.remove(favorite);
-    notifyListeners();
-  }
-  void updateCurrent(WordPair newPair) {
-    current = newPair;
-    notifyListeners();
-  }
-  
-}
 
 
 
